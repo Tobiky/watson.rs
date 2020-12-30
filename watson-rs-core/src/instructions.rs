@@ -1,0 +1,56 @@
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Instruction {
+    Inew,
+    Iinc,
+    Ishl,
+    Iadd,
+    Ineg,
+    Isht,
+    Itof,
+    Itou,
+    Finf,
+    Fnan,
+    Fneg,
+    Snew,
+    Sadd,
+    Onew,
+    Oadd,
+    Anew,
+    Aadd,
+    Bnew,
+    Bneg,
+    Nnew,
+    Gdup,
+    Gpop,
+    Gswp,
+}
+
+impl Instruction {
+    pub fn create_vector() -> Vec<Instruction> {
+        vec![
+            Instruction::Inew,
+            Instruction::Iinc,
+            Instruction::Ishl,
+            Instruction::Iadd,
+            Instruction::Ineg,
+            Instruction::Isht,
+            Instruction::Itof,
+            Instruction::Itou,
+            Instruction::Finf,
+            Instruction::Fnan,
+            Instruction::Fneg,
+            Instruction::Snew,
+            Instruction::Sadd,
+            Instruction::Onew,
+            Instruction::Oadd,
+            Instruction::Anew,
+            Instruction::Aadd,
+            Instruction::Bnew,
+            Instruction::Bneg,
+            Instruction::Nnew,
+            Instruction::Gdup,
+            Instruction::Gpop,
+            Instruction::Gswp,
+        ]
+    }
+}

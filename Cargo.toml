@@ -1,0 +1,35 @@
+[package]
+name = "watson-rs"
+version = "0.1.0"
+authors = ["panda"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+# https://doc.rust-lang.org/cargo/reference/features.html
+# https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html
+watson-rs-core = { path = "watson-rs-core"}
+watson-rs-lexer = { path = "watson-rs-lexer", optional = true, default-features = false }
+watson-rs-runtime = { path = "watson-rs-runtime", optional = true, default-features = false }
+
+[workspace]
+members = [
+    "watson-rs-core",
+    "watson-rs-lexer",
+    "watson-rs-runtime"
+]
+
+[features]
+default = [
+    "lexer",
+    "runtime"
+]
+
+lexer = [
+    "watson-rs-lexer"
+]
+
+runtime = [
+    "watson-rs-runtime"
+]
