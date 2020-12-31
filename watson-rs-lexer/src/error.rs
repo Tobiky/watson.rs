@@ -15,10 +15,7 @@ impl Error {
     }
 
     pub fn with_info(state: State, message: String) -> Self {
-        Error {
-            state,
-            message,
-        }
+        Error { state, message }
     }
 
     pub fn line(&self) -> usize {
@@ -34,6 +31,11 @@ impl Error {
     }
 
     pub fn display_message(&self) -> String {
-        format!("Ln {}, Col {}: {}", self.line(), self.column(), self.message)
+        format!(
+            "Ln {}, Col {}: {}",
+            self.line(),
+            self.column(),
+            self.message
+        )
     }
 }

@@ -12,12 +12,15 @@ edition = "2018"
 watson-rs-core = { path = "watson-rs-core"}
 watson-rs-lexer = { path = "watson-rs-lexer", optional = true, default-features = false }
 watson-rs-runtime = { path = "watson-rs-runtime", optional = true, default-features = false }
+watson-rs-convert = { path = "watson-rs-convert", optional = true, default-features = false }
+
 
 [workspace]
 members = [
     "watson-rs-core",
     "watson-rs-lexer",
-    "watson-rs-runtime"
+    "watson-rs-runtime",
+    "watson-rs-convert"
 ]
 
 [features]
@@ -30,6 +33,11 @@ lexer = [
     "watson-rs-lexer"
 ]
 
+convert = [
+    "watson-rs-convert"
+]
+
 runtime = [
+    "convert",
     "watson-rs-runtime"
 ]

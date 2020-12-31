@@ -2,12 +2,11 @@ use watson_rs_core::{instructions::Instruction, state::State};
 
 use crate::{error::Error, evaluator::Evaluator, scanner::Scanner};
 
-
 pub struct Lexer {
     instructions: Vec<Instruction>,
     state: State,
     evaluator: Evaluator,
-    scanner: Scanner
+    scanner: Scanner,
 }
 
 impl Lexer {
@@ -15,12 +14,12 @@ impl Lexer {
         let state = State::new();
         let evaluator = Evaluator::new(state.mode());
         let scanner = Scanner::new(state.mode());
-        
+
         Lexer {
             instructions: Vec::new(),
             state,
             evaluator,
-            scanner
+            scanner,
         }
     }
 
@@ -36,7 +35,7 @@ impl Lexer {
         self.instructions
     }
 
-    pub fn switch_mode(&mut self) {
+    pub fn next_mode(&mut self) {
         self.state.next_mode();
         self.evaluator = Evaluator::new(self.state.mode());
         self.scanner = Scanner::new(self.state.mode());
@@ -55,15 +54,16 @@ impl Lexer {
                     if self.scanner.is_lexeme(lexeme) {
                         let token = self.evaluator.evaluate(lexeme);
                         self.push(token);
-                        
+
                         if token == Instruction::Snew {
-                            
-                            self.switch_mode();
+                            self.next_mode();
                         }
                     } else {
-                        return self.generate_error_with_message(String::from("sequence is not valid for lexeme mode"));
+                        return self.generate_error_with_message(String::from(
+                            "sequence is not valid for lexeme mode",
+                        ));
                     }
-                    
+
                     self.state.increment_column();
                 }
             } else {

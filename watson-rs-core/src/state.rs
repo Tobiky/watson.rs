@@ -3,7 +3,7 @@ use crate::mode::Mode;
 pub struct State {
     mode: Mode,
     line: usize,
-    column: usize
+    column: usize,
 }
 
 impl State {
@@ -11,7 +11,7 @@ impl State {
         State {
             mode: Mode::A,
             line: 0,
-            column: 0
+            column: 0,
         }
     }
 
@@ -34,7 +34,7 @@ impl State {
     pub fn increment_line(&mut self) {
         self.line += 1;
     }
-    
+
     pub fn increment_column(&mut self) {
         self.column += 1;
     }

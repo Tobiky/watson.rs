@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-use watson_rs_core::{LexemeType, lexeme_sequences, mode::Mode};
+use watson_rs_core::{lexeme_sequences, mode::Mode, LexemeType};
 pub struct Scanner {
     lexemes: HashSet<LexemeType>,
 }

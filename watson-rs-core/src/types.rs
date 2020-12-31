@@ -1,20 +1,24 @@
+use std::collections::HashMap;
+
 pub type WatsonCharacter = u8;
 pub type WChar = WatsonCharacter;
 pub type WatsonString = Vec<WChar>;
 pub type WString = WatsonString;
-pub enum TokenType {
+
+#[derive(Debug, Clone)]
+pub enum Type {
     Int(i64),
     Uint(u64),
     Float(f64),
     String(WString),
-    Object((WString, Box<TokenType>)),
-    Array(Vec<TokenType>),
+    Object(HashMap<WString, Type>),
+    Array(Vec<Type>),
     Bool(bool),
     Nil,
 }
 
-impl TokenType {
+impl Type {
     pub fn int_to_wchar(int: i64) -> WChar {
         (int & !0xff) as WChar
-    }    
+    }
 }
