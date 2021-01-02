@@ -5,39 +5,60 @@ authors = ["panda"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-# https://doc.rust-lang.org/cargo/reference/features.html
-# https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html
-watson-rs-core = { path = "watson-rs-core"}
-watson-rs-lexer = { path = "watson-rs-lexer", optional = true, default-features = false }
-watson-rs-runtime = { path = "watson-rs-runtime", optional = true, default-features = false }
-watson-rs-convert = { path = "watson-rs-convert", optional = true, default-features = false }
-
-
 [workspace]
 members = [
     "watson-rs-core",
     "watson-rs-lexer",
     "watson-rs-runtime",
-    "watson-rs-convert"
+    "watson-rs-compiler"
 ]
 
 [features]
-default = [
-    "lexer",
-    "runtime"
+json = [
+    "watson-rs-core/json"
+]
+
+yaml = [
+    "watson-rs-core/yaml"
+]
+
+toml = [
+    "watson-rs-core/toml"
 ]
 
 lexer = [
     "watson-rs-lexer"
 ]
 
-convert = [
-    "watson-rs-convert"
+compiler = [
+    "watson-rs-compiler"
 ]
 
 runtime = [
-    "convert",
+    "compiler",
+    "lexer",
     "watson-rs-runtime"
+] 
+
+default = [
+    "json",
+    "lexer",
+    "runtime"
 ]
+
+full = [
+    "json",
+    "toml",
+    "yaml",
+    "lexer",
+    "compiler",
+    "runtime"
+]
+
+[dependencies]
+# https://doc.rust-lang.org/cargo/reference/features.html
+# https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html
+watson-rs-core = { path = "watson-rs-core", default-features = false }
+watson-rs-lexer = { path = "watson-rs-lexer", optional = true, default-features = false }
+watson-rs-compiler = { path = "watson-rs-compiler", optional = true, default-features = false }
+watson-rs-runtime = { path = "watson-rs-runtime", optional = true, default-features = false }

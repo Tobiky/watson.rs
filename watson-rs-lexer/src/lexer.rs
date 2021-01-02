@@ -45,8 +45,8 @@ impl Lexer {
         Err(Error::with_info(self.state, message))
     }
 
-    // TODO: Make a generator based on
-    // TODO: Abstract to stream of LexemeType
+    // TODO: Make this function return a generator
+    // TODO: Abstract input to stream of LexemeType
     pub fn tokenize<T: std::io::BufRead>(mut self, input: T) -> Result<Vec<Instruction>, Error> {
         for line in input.lines() {
             if let Ok(line_str) = line {
