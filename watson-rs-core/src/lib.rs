@@ -3,6 +3,7 @@ pub mod mode;
 pub mod state;
 pub mod types;
 
+use instructions::Instruction;
 use mode::Mode;
 
 pub type LexemeType = char;
@@ -28,3 +29,12 @@ pub fn lexeme_sequences(mode: Mode) -> Vec<LexemeType> {
         }
     }
 }
+
+// TODO: Make sure this function is in appropriate place
+pub fn bindings(mode: Mode) -> Vec<(LexemeType, Instruction)> {
+    lexeme_sequences(mode)
+        .iter()
+        .cloned()
+        .zip(Instruction::create_vector())
+        .collect()
+} 

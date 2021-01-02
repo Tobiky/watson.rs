@@ -1,3 +1,4 @@
+// TODO: ASCII/Byte feature; look at lexemes as bytes instead (reduces data size)
 pub mod error;
 pub mod evaluator;
 pub mod lexer;

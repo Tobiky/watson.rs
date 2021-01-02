@@ -8,7 +8,7 @@ pub type WChar = WatsonCharacter;
 pub type WatsonString = Vec<WChar>;
 pub type WString = WatsonString;
 
-// TODO: Change WString to actual string and convert between stages
+// TODO: Change WString to actual string and convert between stages (turn into feature to respect ASCII/Byte feature of lexer)
 #[derive(Debug, Clone)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum Type {

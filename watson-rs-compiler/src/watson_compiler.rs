@@ -1,5 +1,4 @@
 use watson_rs_core::{instructions::Instruction, types::Type};
-
 use crate::{functions::create_type, Compiler};
 
 pub struct WatsonCompiler {

@@ -1,7 +1,7 @@
 [package]
 name = "watson-rs"
 version = "0.1.0"
-authors = ["panda"]
+authors = [ "panda" ]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -9,56 +9,12 @@ edition = "2018"
 members = [
     "watson-rs-core",
     "watson-rs-lexer",
-    "watson-rs-runtime",
     "watson-rs-compiler"
-]
-
-[features]
-json = [
-    "watson-rs-core/json"
-]
-
-yaml = [
-    "watson-rs-core/yaml"
-]
-
-toml = [
-    "watson-rs-core/toml"
-]
-
-lexer = [
-    "watson-rs-lexer"
-]
-
-compiler = [
-    "watson-rs-compiler"
-]
-
-runtime = [
-    "compiler",
-    "lexer",
-    "watson-rs-runtime"
-] 
-
-default = [
-    "json",
-    "lexer",
-    "runtime"
-]
-
-full = [
-    "json",
-    "toml",
-    "yaml",
-    "lexer",
-    "compiler",
-    "runtime"
 ]
 
 [dependencies]
 # https://doc.rust-lang.org/cargo/reference/features.html
 # https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html
-watson-rs-core = { path = "watson-rs-core", default-features = false }
-watson-rs-lexer = { path = "watson-rs-lexer", optional = true, default-features = false }
-watson-rs-compiler = { path = "watson-rs-compiler", optional = true, default-features = false }
-watson-rs-runtime = { path = "watson-rs-runtime", optional = true, default-features = false }
+watson-rs-core     = { path = "watson-rs-core"     }
+watson-rs-lexer    = { path = "watson-rs-lexer"    }
+watson-rs-compiler = { path = "watson-rs-compiler" }
