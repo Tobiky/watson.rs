@@ -3,7 +3,7 @@ use std::collections::HashMap;
 #[cfg(feature = "ascii")]
 use ascii::AsciiChar;
 
-use watson_rs_core::{instructions::Instruction, types::{Type, WString}};
+use watson_rs_core::{instruction::Instruction, types::{Type, WString}};
 
 // TODO: Optimize using Isht and Gdup
 pub fn shift_int(instructions: &mut Vec<Instruction>, amount: u64) {

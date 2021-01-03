@@ -1,7 +1,9 @@
+use watson_rs_lexer::lexer::Lexer;
+
 // https://github.com/genkami/watson#integer
 #[test]
 fn integer_example() {
-
+    let lexer = Lexer::new();
 }
 
 // https://github.com/genkami/watson#string

@@ -1,4 +1,4 @@
-use watson_rs_core::{instructions::Instruction, types::Type};
+use watson_rs_core::{instruction::Instruction, types::Type};
 
 use crate::{Compiler, instruction_sets::get_instruction};
 

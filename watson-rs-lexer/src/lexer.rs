@@ -1,4 +1,4 @@
-use watson_rs_core::{instructions::Instruction, state::State};
+use watson_rs_core::{instruction::Instruction, state::State};
 
 use crate::{error::Error, evaluator::Evaluator, scanner::Scanner};
 
@@ -31,8 +31,8 @@ impl Lexer {
         self.instructions.push(instruction)
     }
 
-    pub fn instructions(self) -> Vec<Instruction> {
-        self.instructions
+    pub fn instructions(&self) -> Vec<Instruction> {
+        self.instructions.clone()
     }
 
     pub fn next_mode(&mut self) {
@@ -41,39 +41,46 @@ impl Lexer {
         self.scanner = Scanner::new(self.state.mode());
     }
 
-    fn generate_error_with_message(self, message: String) -> Result<Vec<Instruction>, Error> {
+    fn generate_error_with_message(&self, message: String) -> Result<Vec<Instruction>, Error> {
         Err(Error::with_info(self.state, message))
+    }
+
+    pub fn tokenize_str(&mut self, input: &str) -> Result<Vec<Instruction>, Error> {
+        for lexeme in input.chars() {
+            if self.scanner.is_lexeme(lexeme) {
+                let token = self.evaluator.evaluate(lexeme);
+                self.push(token);
+
+                if token == Instruction::Snew {
+                    self.next_mode();
+                }
+            } else {
+                return self.generate_error_with_message(String::from(
+                    "sequence is not valid for lexeme mode",
+                ));
+            }
+
+            self.state.increment_column();
+        }
+
+        Ok(self.instructions.clone())
     }
 
     // TODO: Make this function return a generator
     // TODO: Abstract input to stream of LexemeType
-    pub fn tokenize<T: std::io::BufRead>(mut self, input: T) -> Result<Vec<Instruction>, Error> {
-        for line in input.lines() {
-            if let Ok(line_str) = line {
-                for lexeme in line_str.chars() {
-                    if self.scanner.is_lexeme(lexeme) {
-                        let token = self.evaluator.evaluate(lexeme);
-                        self.push(token);
-
-                        if token == Instruction::Snew {
-                            self.next_mode();
-                        }
-                    } else {
-                        return self.generate_error_with_message(String::from(
-                            "sequence is not valid for lexeme mode",
-                        ));
-                    }
-
-                    self.state.increment_column();
-                }
+    pub fn tokenize<T: std::io::BufRead>(&mut self, input: T) -> Result<Vec<Instruction>, Error> {
+        for line_result in input.lines() {
+            if let Ok(line) = line_result {
+                let _ = self.tokenize_str(line.as_str())?;
             } else {
-                return self.generate_error_with_message(line.unwrap_err().to_string());
+                return self.generate_error_with_message(line_result.unwrap_err().to_string());
             }
 
             self.state.increment_line();
             self.state.reset_column();
         }
 
-        Ok(self.instructions())
+        let instructions = self.instructions();
+        Ok(instructions)
     }
 }

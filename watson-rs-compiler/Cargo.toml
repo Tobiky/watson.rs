@@ -9,3 +9,10 @@ edition = "2018"
 [dependencies]
 watson-rs-core = { path = "../watson-rs-core", default-features = false }
 ascii = "1.0.0"
+
+[dev-dependencies]
+serde      = "1.0"
+serde_yaml = "0.8"
+serde_json = "1.0"
+toml       = "0.5"
+watson-rs-lexer = { path = "../watson-rs-lexer" }

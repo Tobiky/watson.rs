@@ -1,5 +1,6 @@
 use crate::mode::Mode;
 
+#[derive(Debug, Clone, Copy)]
 pub struct State {
     mode: Mode,
     line: usize,
@@ -8,8 +9,12 @@ pub struct State {
 
 impl State {
     pub fn new() -> Self {
+        Self::with_mode(Mode::A)
+    }
+
+    pub fn with_mode(mode: Mode) -> Self {
         State {
-            mode: Mode::A,
+            mode,
             line: 0,
             column: 0,
         }

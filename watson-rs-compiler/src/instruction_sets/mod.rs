@@ -1,4 +1,4 @@
-use watson_rs_core::{instructions::Instruction, types::Type};
+use watson_rs_core::{instruction::Instruction, types::Type};
 
 pub(crate) mod float;
 pub(crate) mod string;

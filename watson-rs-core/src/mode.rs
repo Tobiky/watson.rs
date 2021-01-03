@@ -29,4 +29,8 @@ impl Mode {
         let new_mode = mode << 1;
         Mode::from(new_mode)
     }
+
+    pub fn modes() -> Vec<Mode> {
+        vec![Mode::A, Mode::S]
+    }
 }
