@@ -27,7 +27,7 @@ fn integer_example() {
         result.len()
     );
 
-    let type_object = result[0];
+    let type_object = result[0].clone();
 
     assert!(
         match type_object {
@@ -38,7 +38,7 @@ fn integer_example() {
         type_object
     );
 
-    let Type::Int(value) = type_object;
+    let value = type_object.as_int();
 
     assert_eq!(value, 123, "expected 123, found {}", value);
 }
@@ -67,7 +67,7 @@ fn string_example() {
         result.len()
     );
 
-    let type_object = &result[0];
+    let type_object = result[0].clone();
 
     assert!(
         match type_object {
@@ -78,7 +78,7 @@ fn string_example() {
         type_object
     );
 
-    let Type::String(value) = type_object;
+    let value = type_object.as_string();
 
     assert_eq!(
         b"tako",
