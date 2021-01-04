@@ -1,15 +1,15 @@
 use watson_rs_core::{instruction::Instruction, types::Type};
 
-pub(crate) mod float;
-pub(crate) mod string;
-pub(crate) mod integer;
-pub(crate) mod object;
 pub(crate) mod array;
 pub(crate) mod bool;
+pub(crate) mod float;
 pub(crate) mod global;
+pub(crate) mod integer;
 pub(crate) mod nil;
+pub(crate) mod object;
+pub(crate) mod string;
 
-use self::{float::*, string::*, integer::*, object::*, array::*, bool::*, global::*, nil::*};
+use self::{array::*, bool::*, float::*, global::*, integer::*, nil::*, object::*, string::*};
 
 // TODO: Find some way to automate the match arms
 #[allow(unreachable_patterns)]

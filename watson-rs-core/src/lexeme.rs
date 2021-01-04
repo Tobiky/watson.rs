@@ -34,13 +34,13 @@ pub fn bindings(mode: Mode) -> Vec<(LexemeType, Instruction)> {
         .cloned()
         .zip(Instruction::create_vector())
         .collect()
-} 
+}
 
 // TODO: return references instead to avoid copying
 pub fn all_bindings() -> Vec<(Mode, Vec<(LexemeType, Instruction)>)> {
-    Mode::modes().iter()
-                 .cloned()
-                 .map(|mode| 
-                    (mode, bindings(mode)))
-                 .collect::<Vec<(Mode, Vec<(LexemeType, Instruction)>)>>()
+    Mode::modes()
+        .iter()
+        .cloned()
+        .map(|mode| (mode, bindings(mode)))
+        .collect::<Vec<(Mode, Vec<(LexemeType, Instruction)>)>>()
 }

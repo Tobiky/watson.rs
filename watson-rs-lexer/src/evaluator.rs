@@ -1,6 +1,10 @@
 use std::collections::HashMap;
 
-use watson_rs_core::{instruction::Instruction, lexeme::{LexemeType, bindings}, mode::Mode};
+use watson_rs_core::{
+    instruction::Instruction,
+    lexeme::{bindings, LexemeType},
+    mode::Mode,
+};
 
 pub struct Evaluator {
     bindings: HashMap<LexemeType, Instruction>,
@@ -8,7 +12,9 @@ pub struct Evaluator {
 
 impl Evaluator {
     pub fn new(mode: Mode) -> Self {
-        Evaluator { bindings: bindings(mode).iter().cloned().collect() }
+        Evaluator {
+            bindings: bindings(mode).iter().cloned().collect(),
+        }
     }
 
     pub fn evaluate(&self, lexeme: LexemeType) -> Instruction {

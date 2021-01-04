@@ -3,14 +3,17 @@ use std::collections::HashMap;
 #[cfg(feature = "ascii")]
 use ascii::AsciiChar;
 
-use watson_rs_core::{instruction::Instruction, types::{Type, WString}};
+use watson_rs_core::{
+    instruction::Instruction,
+    types::{Type, WString},
+};
 
 // TODO: Optimize using Isht and Gdup
 pub fn shift_int(instructions: &mut Vec<Instruction>, amount: u64) {
     if amount == 0 {
         return;
     }
-    
+
     for _ in 0..amount {
         instructions.push(Instruction::Ishl);
     }
@@ -30,7 +33,7 @@ pub fn create_uint(instructions: &mut Vec<Instruction>, uint: &u64) {
         if ((uint >> idx) & !0x1) == 1 {
             instructions.push(Instruction::Inew);
             instructions.push(Instruction::Iinc);
-            shift_int(instructions,  idx);
+            shift_int(instructions, idx);
             ints_to_combine += 1;
         }
     }
@@ -58,7 +61,6 @@ pub fn create_int(instructions: &mut Vec<Instruction>, int: &i64) {
     }
 }
 
-
 pub fn create_bool(instructions: &mut Vec<Instruction>, boolean: &bool) {
     instructions.push(Instruction::Bnew);
 
@@ -82,12 +84,14 @@ pub fn create_ascii(instructions: &mut Vec<Instruction>, character: &char) {
 }
 
 #[cfg(feature = "ascii")]
-pub fn create_ascii_string(instructions: &mut Vec<Instruction>, string: &str){
-    string.chars().for_each(|character| create_ascii(instructions, &character));
+pub fn create_ascii_string(instructions: &mut Vec<Instruction>, string: &str) {
+    string
+        .chars()
+        .for_each(|character| create_ascii(instructions, &character));
 }
 // ???? end
 
-pub fn create_string(instructions: &mut Vec<Instruction>, string: &Vec<u8>){
+pub fn create_string(instructions: &mut Vec<Instruction>, string: &Vec<u8>) {
     instructions.push(Instruction::Snew);
 
     for &character in string {
@@ -116,7 +120,6 @@ pub fn create_object(instructions: &mut Vec<Instruction>, object: &HashMap<WStri
     }
 }
 
-
 fn create_array(instructions: &mut Vec<Instruction>, array: &Vec<Type>) {
     instructions.push(Instruction::Anew);
 
@@ -128,13 +131,13 @@ fn create_array(instructions: &mut Vec<Instruction>, array: &Vec<Type>) {
 
 pub fn create_type(instructions: &mut Vec<Instruction>, object: &Type) {
     match object {
-        Type::Int(value) => { create_int(instructions, value) }
-        Type::Uint(value) => { create_uint(instructions, value)}
-        Type::Float(float) => { create_float(instructions, float)}
-        Type::String(string) => { create_string(instructions, string) }
-        Type::Object(object) => { create_object(instructions, object)}
-        Type::Array(array) => { create_array(instructions, array) }
-        Type::Bool(boolean) => { create_bool(instructions, boolean) }
-        Type::Nil => { instructions.push(Instruction::Nnew) }
+        Type::Int(value) => create_int(instructions, value),
+        Type::Uint(value) => create_uint(instructions, value),
+        Type::Float(float) => create_float(instructions, float),
+        Type::String(string) => create_string(instructions, string),
+        Type::Object(object) => create_object(instructions, object),
+        Type::Array(array) => create_array(instructions, array),
+        Type::Bool(boolean) => create_bool(instructions, boolean),
+        Type::Nil => instructions.push(Instruction::Nnew),
     }
 }

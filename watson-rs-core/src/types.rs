@@ -1,5 +1,5 @@
 #[cfg(feature = "serde")]
-use serde::{Serialize, Deserialize};
+use serde::{Deserialize, Serialize};
 
 use std::collections::HashMap;
 
@@ -38,49 +38,49 @@ impl Type {
     pub fn as_int(self) -> i64 {
         match self {
             Type::Int(x) => x,
-            _ => panic!("tried calling `Type::as_int()` on a non-int value")
+            _ => panic!("tried calling `Type::as_int()` on a non-int value"),
         }
     }
 
     pub fn as_uint(self) -> u64 {
         match self {
             Type::Uint(x) => x,
-            _ => panic!("tried calling `Type::as_uint()` on a non-uint value")
+            _ => panic!("tried calling `Type::as_uint()` on a non-uint value"),
         }
     }
 
     pub fn as_float(self) -> f64 {
         match self {
             Type::Float(x) => x,
-            _ => panic!("tried calling `Type::as_float()` on a non-float value")
+            _ => panic!("tried calling `Type::as_float()` on a non-float value"),
         }
     }
 
     pub fn as_string(self) -> WString {
         match self {
             Type::String(x) => x,
-            _ => panic!("tried calling `Type::as_string()` on a non-string value")
+            _ => panic!("tried calling `Type::as_string()` on a non-string value"),
         }
     }
 
     pub fn as_object(self) -> WObject {
         match self {
             Type::Object(x) => x,
-            _ => panic!("tried calling `Type::as_object()` on a non-object value")
+            _ => panic!("tried calling `Type::as_object()` on a non-object value"),
         }
     }
 
     pub fn as_array(self) -> WArray {
         match self {
             Type::Array(x) => x,
-            _ => panic!("tried calling `Type::as_array()` on a non-array value")
+            _ => panic!("tried calling `Type::as_array()` on a non-array value"),
         }
     }
 
     pub fn as_bool(self) -> bool {
         match self {
             Type::Bool(x) => x,
-            _ => panic!("tried calling `Type::as_bool()` on a non-bool value")
+            _ => panic!("tried calling `Type::as_bool()` on a non-bool value"),
         }
     }
 }

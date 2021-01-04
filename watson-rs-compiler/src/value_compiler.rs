@@ -1,6 +1,6 @@
 use watson_rs_core::{instruction::Instruction, types::Type};
 
-use crate::{Compiler, instruction_sets::get_instruction};
+use crate::{instruction_sets::get_instruction, Compiler};
 
 pub struct ValueCompiler {
     instructions: Vec<Instruction>,

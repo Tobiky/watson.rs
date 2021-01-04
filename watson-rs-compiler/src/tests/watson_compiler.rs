@@ -7,19 +7,19 @@ fn integer_example() {
     let watson = "BBuaBubaBubbbaBubbbbaBubbbbbaBubbbbbba";
     let result = lexer.tokenize_str(watson);
 
-    assert!(result.is_ok(), "{}", result.err().unwrap().display_message());
-    
+    assert!(
+        result.is_ok(),
+        "{}",
+        result.err().unwrap().display_message()
+    );
+
     let instructions = result.ok().unwrap();
 }
 
 // https://github.com/genkami/watson#string
 #[test]
-fn string_example() {
-
-}
+fn string_example() {}
 
 // https://github.com/genkami/watson#hello-world
 #[test]
-fn hello_world_example() {
-
-}
+fn hello_world_example() {}

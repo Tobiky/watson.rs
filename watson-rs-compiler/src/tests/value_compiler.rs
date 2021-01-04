@@ -21,21 +21,15 @@ fn integer_example() {
     let result = value_compiler.compile();
 
     assert_eq!(
-        result.len(),
-        1,
-        "expected length 1, found length {}",
-        result.len()
+        result.len(), 1,
+        "expected length 1, found length {}", result.len()
     );
 
     let type_object = result[0].clone();
 
     assert!(
-        match type_object {
-            Type::Int(_) => true,
-            _ => false,
-        },
-        "expected int type found {:?}",
-        type_object
+        matches!(type_object, Type::Int(_)),
+        "expected int type found {:?}", type_object
     );
 
     let value = type_object.as_int();
@@ -52,8 +46,7 @@ fn string_example() {
 
     assert!(
         result.is_ok(),
-        "{}",
-        result.err().unwrap().display_message()
+        "{}", result.err().unwrap().display_message()
     );
 
     let instructions = result.ok().unwrap();
@@ -61,31 +54,22 @@ fn string_example() {
     let result = value_compiler.compile();
 
     assert_eq!(
-        result.len(),
-        1,
-        "expected length 1, found length {}",
-        result.len()
+        result.len(), 1,
+        "expected length 1, found length {}", result.len()
     );
 
     let type_object = result[0].clone();
 
     assert!(
-        match type_object {
-            Type::String(_) => true,
-            _ => false,
-        },
-        "expected string type found {:?}",
-        type_object
+        matches!(type_object, Type::String(_)),
+        "expected string type found {:?}", type_object
     );
 
     let value = type_object.as_string();
 
     assert_eq!(
-        b"tako",
-        value.as_slice(),
-        "expected {:?} found {:?}",
-        b"tako",
-        value.as_slice()
+        b"tako",  value.as_slice(),
+        "expected {:?} found {:?}", b"tako", value.as_slice()
     )
 }
 
@@ -93,19 +77,19 @@ fn string_example() {
 #[test]
 fn hello_world_example() {
     let watson = "~?ShaaaaaarrShaaaaarrkShaaarrk-
-    SameeShaaaaaarrShaaaaarrkShaarrkShrrk-
-    ShaaaaaarrShaaaaakSameeShaaarrkShaarrk-
-    ShaaaaaarrShaaaaarrkShaaarrkShaarrk-
-    ShaaaaaarrShaaaaarrkShaaarrkShaarrkSharrkShrrk-$
-    BubbbbbbBubbbbbaBubbbbaBubbaBubaBua!
-    BubbbbbbBubbbbbaBubbbaBubbaBubaBua!
-    BubbbbbbBubbbbbaBubbbbaBuba!
-    BubbbbbbBubbbbbaBubbbaBubba!
-    BubbbbbbBubbbbbaBubba!M?
-    ShaaaaaaShaaaaakShaakShak-
-    ShaaaaaaShaaaaakShaaakShk-
-    ShaaaaaaShaaaaakShaaaakShak-
-    ShaaaaaaShaaaaakShaaaakShakShk-
-    ShaaaaaaShaaaaakShaaaakShaak-
-    ^!!!!!!!!!!!!!g";
+                        SameeShaaaaaarrShaaaaarrkShaarrkShrrk-
+                        ShaaaaaarrShaaaaakSameeShaaarrkShaarrk-
+                        ShaaaaaarrShaaaaarrkShaaarrkShaarrk-
+                        ShaaaaaarrShaaaaarrkShaaarrkShaarrkSharrkShrrk-$
+                        BubbbbbbBubbbbbaBubbbbaBubbaBubaBua!
+                        BubbbbbbBubbbbbaBubbbaBubbaBubaBua!
+                        BubbbbbbBubbbbbaBubbbbaBuba!
+                        BubbbbbbBubbbbbaBubbbaBubba!
+                        BubbbbbbBubbbbbaBubba!M?
+                        ShaaaaaaShaaaaakShaakShak-
+                        ShaaaaaaShaaaaakShaaakShk-
+                        ShaaaaaaShaaaaakShaaaakShak-
+                        ShaaaaaaShaaaaakShaaaakShakShk-
+                        ShaaaaaaShaaaaakShaaaakShaak-
+                        ^!!!!!!!!!!!!!g";
 }
