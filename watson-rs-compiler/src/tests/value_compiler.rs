@@ -121,7 +121,7 @@ fn hello_world_example() {
     let value = type_object.as_object();
     let expected = [(b"first".to_vec(), Type::Bool(true)), (b"hello".to_vec(), Type::String(b"world".to_vec()))]
         .iter()
-        .map(|&x| x)
+        .map(|x| x.clone())
         .collect::<HashMap<Vec<u8>, Type>>();
     
     assert!(
