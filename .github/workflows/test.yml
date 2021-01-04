@@ -1,0 +1,41 @@
+name: Rust
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        rust-version: [1.39.x]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Setup Rust
+        uses: ATiltedTree/setup-rust@v1.0.4
+        with:
+          rust-version:  ${{ matrix.rust-version }}
+          
+      - name: Setup toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Chace
+        uses: Swatinem/rust-cache@v1
+        
+      - name: Build
+        run: cargo build --verbose
+        
+      - name: Test
+        run: cargo test --verbose
