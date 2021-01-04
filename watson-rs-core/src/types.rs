@@ -17,7 +17,7 @@ pub type WatsonArray = Vec<Type>;
 pub type WArray = WatsonArray;
 
 // TODO: Change WString to actual string and convert between stages (turn into feature to respect ASCII/Byte feature of lexer)
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, PartialEq)]
 #[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
 pub enum Type {
     Int(i64),
