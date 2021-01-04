@@ -26,6 +26,7 @@ pub fn lexeme_sequences(mode: Mode) -> Vec<LexemeType> {
     }
 }
 
+// TODO: return references instead to avoid copying
 // TODO: Make sure this function is in appropriate place
 pub fn bindings(mode: Mode) -> Vec<(LexemeType, Instruction)> {
     lexeme_sequences(mode)
@@ -35,6 +36,7 @@ pub fn bindings(mode: Mode) -> Vec<(LexemeType, Instruction)> {
         .collect()
 } 
 
+// TODO: return references instead to avoid copying
 pub fn all_bindings() -> Vec<(Mode, Vec<(LexemeType, Instruction)>)> {
     Mode::modes().iter()
                  .cloned()

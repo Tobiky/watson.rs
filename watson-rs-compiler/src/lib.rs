@@ -5,8 +5,6 @@ pub mod watson_compiler;
 
 mod tests;
 
-// TODO: Make builder for compiler?
-
 // Compiles types and values into WATSON instructions or vice versa
 pub trait Compiler {
     type Out;

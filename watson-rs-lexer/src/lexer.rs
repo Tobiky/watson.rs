@@ -45,6 +45,8 @@ impl Lexer {
         Err(Error::with_info(self.state, message))
     }
 
+    // TODO: ASCII version
+    // TODO: Not-mutable version
     pub fn tokenize_str(&mut self, input: &str) -> Result<Vec<Instruction>, Error> {
         for lexeme in input.chars() {
             if self.scanner.is_lexeme(lexeme) {

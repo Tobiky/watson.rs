@@ -1,4 +1,4 @@
-use std::string::String;
+use std::{fmt::Debug, string::String};
 
 use watson_rs_core::state::State;
 pub struct Error {
@@ -37,5 +37,11 @@ impl Error {
             self.column(),
             self.message
         )
+    }
+}
+
+impl Debug for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.display_message())
     }
 }
