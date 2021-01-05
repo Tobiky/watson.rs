@@ -11,7 +11,8 @@ pub fn sadd(stack: &mut Vec<Type>) {
     if let Type::Int(x) = token_x {
         if let Type::String(mut y) = token_s {
             y.push(Type::int_to_wchar(x));
-            return stack.push(Type::String(y));
+            stack.push(Type::String(y));
+            return;
         }
     }
 

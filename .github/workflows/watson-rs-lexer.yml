@@ -1,4 +1,4 @@
-name: All Tests
+name: watson.rs core
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       matrix:
         rust-version: [stable]
         os:  [ubuntu-latest, macos-latest, windows-latest]
-        package: [watson-rs, watson-rs-core, watson-rs-compiler, watson-rs-lexer]
+        package: [watson-rs-lexer]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Setup Rust

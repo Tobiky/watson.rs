@@ -1,0 +1,42 @@
+name: watson.rs core
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        rust-version: [stable]
+        os:  [ubuntu-latest, macos-latest, windows-latest]
+        package: [watson-rs]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Setup Rust
+        uses: ATiltedTree/setup-rust@v1
+        with:
+          rust-version:  ${{ matrix.rust-version }}
+          
+      - name: Setup toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          profile: minimal
+          toolchain: stable
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+        
+      - name: Chace
+        uses: Swatinem/rust-cache@v1
+        
+      - name: Build
+        run: cargo build --verbose -p ${{ matrix.package }}
+        
+      - name: Test
+        run: cargo test --verbose -p ${{ matrix.package }}
