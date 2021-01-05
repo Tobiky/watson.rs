@@ -1,6 +1,6 @@
-use watson_rs_core::{lexeme, types::Type};
+use watson_rs_core::{types::Type};
 use watson_rs_lexer::lexer::Lexer;
-use watson_rs_compiler::watson_compiler::WatsonCompiler;
+use watson_rs_compiler::{Compiler, watson_compiler::WatsonCompiler};
 
 // https://github.com/genkami/watson#integer
 #[test]
@@ -15,10 +15,22 @@ fn integer_example() {
          "expected `BBuaBubaBubbbaBubbbbaBubbbbbaBubbbbbba` found `{}`", string_result
      );
 
+     let compiler_instructions = watson_compiler.compile();
+
      let mut lexer = Lexer::new();
-     let instructions_result = lexer.tokenize_str("BBuaBubaBubbbaBubbbbaBubbbbbaBubbbbbba");
+     let string_instructions_result = lexer.tokenize_str("BBuaBubaBubbbaBubbbbaBubbbbbaBubbbbbba");
 
+     assert!(
+         string_instructions_result.is_ok(),
+         string_instructions_result.err().unwrap().display_message()
+     );
 
+     let string_instructions = string_instructions_result.ok().unwrap();
+
+     assert_eq!(
+        string_instructions, compiler_instructions,
+         "expected {:?} found {:?}", string_instructions, compiler_instructions
+     );
 }
 
 // https://github.com/genkami/watson#string
