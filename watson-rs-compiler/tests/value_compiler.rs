@@ -14,7 +14,6 @@ fn integer_example() {
 
     assert!(
         result.is_ok(),
-        "{}",
         result.err().unwrap().display_message()
     );
 
@@ -48,7 +47,7 @@ fn string_example() {
 
     assert!(
         result.is_ok(),
-        "{}", result.err().unwrap().display_message()
+        result.err().unwrap().display_message()
     );
 
     let instructions = result.ok().unwrap();
@@ -99,7 +98,7 @@ fn hello_world_example() {
 
     assert!(
         result.is_ok(),
-        "{}", result.err().unwrap().display_message()
+        result.err().unwrap().display_message()
     );
 
     let instructions = result.ok().unwrap();
