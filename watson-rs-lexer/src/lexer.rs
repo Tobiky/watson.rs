@@ -49,6 +49,10 @@ impl Lexer {
     // TODO: Not-mutable version
     pub fn tokenize_str(&mut self, input: &str) -> Result<Vec<Instruction>, Error> {
         for lexeme in input.chars() {
+            if lexeme.is_whitespace() || lexeme.is_ascii_whitespace() {
+                continue;
+            }
+            
             if self.scanner.is_lexeme(lexeme) {
                 let token = self.evaluator.evaluate(lexeme);
                 self.push(token);
