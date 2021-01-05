@@ -8,7 +8,8 @@ pub fn bneg(stack: &mut Vec<Type>) {
     let token_x = stack.pop().unwrap();
 
     if let Type::Bool(x) = token_x {
-        return stack.push(Type::Bool(!x));
+        stack.push(Type::Bool(!x));
+        return;
     }
 
     panic!("tried popping non-Bool object from stack");

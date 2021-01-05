@@ -14,7 +14,8 @@ pub fn fneg(stack: &mut Vec<Type>) {
     let token = stack.pop().unwrap();
 
     if let Type::Float(x) = token {
-        return stack.push(Type::Float(-x));
+        stack.push(Type::Float(-x));
+        return;
     }
 
     panic!("tried popping non-Float object from stack");

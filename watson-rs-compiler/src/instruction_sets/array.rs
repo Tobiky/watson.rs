@@ -9,7 +9,8 @@ pub fn aadd(stack: &mut Vec<Type>) {
     let token_a = stack.pop().unwrap();
 
     if let Type::Array(mut a) = token_a {
-        return a.push(token_x);
+        a.push(token_x);
+        return;
     }
 
     panic!("tried popping non-Array object from stack");
