@@ -6,6 +6,7 @@ use watson_rs_core::{
 
 use crate::{functions::create_type, Compiler};
 
+#[derive(Debug, Clone)]
 pub struct WatsonCompiler {
     stack: Vec<Type>,
 }
