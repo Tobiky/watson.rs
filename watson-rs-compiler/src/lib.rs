@@ -3,8 +3,6 @@ pub(crate) mod instruction_sets;
 pub mod value_compiler;
 pub mod watson_compiler;
 
-mod tests;
-
 // Compiles types and values into WATSON instructions or vice versa
 pub trait Compiler {
     type Out;

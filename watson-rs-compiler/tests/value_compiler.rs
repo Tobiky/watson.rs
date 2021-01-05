@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use watson_rs_core::types::Type;
 use watson_rs_lexer::lexer::Lexer;
 
-use crate::{value_compiler::ValueCompiler, Compiler};
+use watson_rs_compiler::{value_compiler::ValueCompiler, Compiler};
 
 // https://github.com/genkami/watson#integer
 #[test]
