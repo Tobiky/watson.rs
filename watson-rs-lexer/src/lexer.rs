@@ -57,8 +57,8 @@ impl Lexer {
                     self.next_mode();
                 }
             } else {
-                return self.generate_error_with_message(String::from(
-                    "sequence is not valid for lexeme mode",
+                return self.generate_error_with_message(format!(
+                    "`{}`sequence is not valid for lexeme mode", lexeme
                 ));
             }
 
