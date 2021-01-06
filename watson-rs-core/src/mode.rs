@@ -24,9 +24,11 @@ impl From<Mode> for i32 {
 }
 
 impl Mode {
+    pub const MODES_COUNT: usize = 2;
+
     pub fn next_mode(self) -> Mode {
         let mode = i32::from(self);
-        let new_mode = mode << 1;
+        let new_mode = (mode << 1) % (Self::MODES_COUNT as i32 + 1);
         Mode::from(new_mode)
     }
 
