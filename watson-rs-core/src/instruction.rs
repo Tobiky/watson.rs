@@ -56,7 +56,7 @@ impl Instruction {
 }
 
 #[cfg(test)]
-mod tests {
+mod unit_tests {
     use super::Instruction;
 
     #[test]
