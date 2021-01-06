@@ -54,3 +54,38 @@ impl Instruction {
         ]
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::Instruction;
+
+    #[test]
+    fn create_vector(){
+        let instruction_vector =  crate::instruction::Instruction::create_vector();
+        let mut iterator = instruction_vector.iter();
+
+        assert!(matches!(iterator.next(), Some(Instruction::Inew)));
+        assert!(matches!(iterator.next(), Some(Instruction::Iinc)));
+        assert!(matches!(iterator.next(), Some(Instruction::Ishl)));
+        assert!(matches!(iterator.next(), Some(Instruction::Iadd)));
+        assert!(matches!(iterator.next(), Some(Instruction::Ineg)));
+        assert!(matches!(iterator.next(), Some(Instruction::Isht)));
+        assert!(matches!(iterator.next(), Some(Instruction::Itof)));
+        assert!(matches!(iterator.next(), Some(Instruction::Itou)));
+        assert!(matches!(iterator.next(), Some(Instruction::Finf)));
+        assert!(matches!(iterator.next(), Some(Instruction::Fnan)));
+        assert!(matches!(iterator.next(), Some(Instruction::Fneg)));
+        assert!(matches!(iterator.next(), Some(Instruction::Snew)));
+        assert!(matches!(iterator.next(), Some(Instruction::Sadd)));
+        assert!(matches!(iterator.next(), Some(Instruction::Onew)));
+        assert!(matches!(iterator.next(), Some(Instruction::Oadd)));
+        assert!(matches!(iterator.next(), Some(Instruction::Anew)));
+        assert!(matches!(iterator.next(), Some(Instruction::Aadd)));
+        assert!(matches!(iterator.next(), Some(Instruction::Bnew)));
+        assert!(matches!(iterator.next(), Some(Instruction::Bneg)));
+        assert!(matches!(iterator.next(), Some(Instruction::Nnew)));
+        assert!(matches!(iterator.next(), Some(Instruction::Gdup)));
+        assert!(matches!(iterator.next(), Some(Instruction::Gpop)));
+        assert!(matches!(iterator.next(), Some(Instruction::Gswp)));
+    }
+}
