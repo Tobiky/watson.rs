@@ -36,3 +36,35 @@ impl Mode {
         vec![Mode::A, Mode::S]
     }
 }
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn from_i32() {
+        assert_eq!(Mode::from(0x1), Mode::A);
+        assert_eq!(Mode::from(0x2), Mode::S);
+    }
+
+    #[test]
+    fn to_i32() {
+        assert_eq!(i32::from(Mode::A), 0x1);
+        assert_eq!(i32::from(Mode::S), 0x2);
+    }
+
+    #[test]
+    fn switch_mode() {
+        let mode = Mode::A;
+        assert_eq!(mode, Mode::A);
+        let mode = mode.next_mode();
+        assert_eq!(mode, Mode::S);
+        let mode = mode.next_mode();
+        assert_eq!(mode, Mode::A);
+    }
+
+    #[test]
+    fn modes_vector() {
+        assert_eq!(Mode::modes(), vec![Mode::A, Mode::S]);
+    }
+}
