@@ -1,4 +1,4 @@
-name: watson.rs
+name: watson.rs lexer
 
 on:
   push:
@@ -11,7 +11,6 @@ env:
 
 jobs:
   tests:
-    name: watson.rs lexer
     strategy:
       matrix:
         rust-version: [stable]
