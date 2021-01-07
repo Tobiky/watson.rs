@@ -178,24 +178,26 @@ mod unit_tests {
 
         #[test]
         fn toml_serde() {
+            // unsupported Rust type??? WHICH ONE???????????????
             let stack = create_stack();
 
             let toml_string = toml::to_string(&stack);
-            assert!(toml_string.is_ok());
+            assert!(toml_string.is_ok(), toml_string.unwrap_err().to_string());
 
             let toml_object = toml::from_str::<toml::Value>(toml_string.unwrap().as_str());
-            assert!(toml_object.is_ok())
+            assert!(toml_object.is_ok(), toml_object.unwrap_err().to_string());
         }
 
         #[test]
         fn json_serde() {
+            // FIXME: WatsonString (Vec<u8>) as keys causes issues with serializing to JSON
             let stack = create_stack();
 
             let json_string = serde_json::to_string(&stack);
-            assert!(json_string.is_ok());
+            assert!(json_string.is_ok(), json_string.unwrap_err().to_string());
 
             let json_object = serde_json::from_str::<serde_json::Value>(json_string.unwrap().as_str());
-            assert!(json_object.is_ok());
+            assert!(json_object.is_ok(), json_object.unwrap_err().to_string());
         }
 
         #[test]
@@ -203,10 +205,10 @@ mod unit_tests {
             let stack = create_stack();
 
             let yaml_string = serde_yaml::to_string(&stack);
-            assert!(yaml_string.is_ok());
+            assert!(yaml_string.is_ok(), yaml_string.unwrap_err().to_string());
 
             let yaml_object = serde_yaml::from_str::<serde_yaml::Value>(yaml_string.unwrap().as_str());
-            assert!(yaml_object.is_ok());
+            assert!(yaml_object.is_ok(), yaml_object.unwrap_err().to_string());
         }
     }
 }
