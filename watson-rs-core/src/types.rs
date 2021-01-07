@@ -18,7 +18,7 @@ pub type WArray = WatsonArray;
 
 // TODO: Change WString to actual string and convert between stages (turn into feature to respect ASCII/Byte feature of lexer)
 #[derive(Debug, Clone, PartialEq)]
-#[cfg_attr(feature = "serde", derive(Serialize, Deserialize))]
+#[cfg_attr(any(feature = "serde", test), derive(Serialize, Deserialize))]
 pub enum Type {
     Int(i64),
     Uint(u64),
@@ -84,3 +84,130 @@ impl Type {
         }
     }
 }
+
+#[cfg(test)]
+mod unit_tests {
+    use super::*;
+
+    #[test]
+    fn to_int() {
+        let int = Type::Int(-5);
+        assert_eq!(-5, int.as_int());
+    }
+
+    #[test]
+    fn to_uint() {
+        let uint = Type::Uint(6);
+        assert_eq!(6, uint.as_uint());
+    }
+
+    #[test]
+    fn to_float() {
+        let float = Type::Float(7.7);
+        assert_eq!(7.7, float.as_float());
+    }
+
+    #[test]
+    fn to_string() {
+        let string = Type::String(b"hello".to_vec());
+        assert_eq!(b"hello".to_vec(), string.as_string());
+    }
+
+    #[test]
+    fn to_object() {
+        let mut object = HashMap::new();
+        object.insert(vec![ b'a', b'c', b'd' ], Type::Nil);
+
+        let object_type = Type::Object(object.clone());
+
+        assert_eq!(object, object_type.as_object());
+    }
+
+    #[test]
+    fn to_array() {
+        let mut array = WArray::new();
+        array.push(Type::Nil);
+
+        let array_type = Type::Array(array.clone());
+
+        assert_eq!(array, array_type.as_array());
+    }
+
+    #[test]
+    fn to_bool() {
+        let boolean = Type::Bool(false);
+
+        assert_eq!(false, boolean.as_bool());
+    }
+
+    // mmm tasty redundancy
+    #[cfg(test)]
+    mod serde_tests {
+        use toml;
+        use serde_json;
+        use serde_yaml;
+
+        use crate::types::{Type, WArray, WObject};
+
+        fn create_stack() -> Vec<Type> {
+            let mut stack = Vec::<Type>::new();
+
+            stack.push(Type::Int(69));
+            stack.push(Type::Int(-420));
+            
+            let mut object = WObject::new();
+            object.insert(b"answer".to_vec(), Type::Uint(42));
+            object.insert(b"nil".to_vec(), Type::Nil);
+
+            stack.push(Type::Object(object));
+
+            let mut array = WArray::new();
+            array.push(Type::Nil);
+            array.push(Type::Int(-2));
+            array.push(Type::Uint(3));
+            array.push(Type::Float(3.5));
+
+            stack.push(Type::Array(array));
+
+            let string = b"hello world".to_vec();
+
+            stack.push(Type::String(string));
+
+            stack
+        }
+
+        #[test]
+        fn toml_serde() {
+            let stack = create_stack();
+
+            let toml_string = toml::to_string(&stack);
+            assert!(toml_string.is_ok());
+
+            let toml_object = toml::from_str::<toml::Value>(toml_string.unwrap().as_str());
+            assert!(toml_object.is_ok())
+        }
+
+        #[test]
+        fn json_serde() {
+            let stack = create_stack();
+
+            let json_string = serde_json::to_string(&stack);
+            assert!(json_string.is_ok());
+
+            let json_object = serde_json::from_str::<serde_json::Value>(json_string.unwrap().as_str());
+            assert!(json_object.is_ok());
+        }
+
+        #[test]
+        fn yaml_serde() {
+            let stack = create_stack();
+
+            let yaml_string = serde_yaml::to_string(&stack);
+            assert!(yaml_string.is_ok());
+
+            let yaml_object = serde_yaml::from_str::<serde_yaml::Value>(yaml_string.unwrap().as_str());
+            assert!(yaml_object.is_ok());
+        }
+    }
+}
+
