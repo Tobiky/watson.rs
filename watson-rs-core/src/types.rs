@@ -223,19 +223,21 @@ mod unit_tests {
 
         #[test]
         fn toml_serde() {
-            // unsupported Rust type??? WHICH ONE???????????????
+            // FIXME: toml. unsupported Rust type
+            // TOML might be incompatible with how serde 
+            // de/serializes this type of format
             let stack = create_stack();
-
+            
             let toml_string = toml::to_string(&stack);
             assert!(toml_string.is_ok(), toml_string.unwrap_err().to_string());
-
+            
             let toml_object = toml::from_str::<toml::Value>(toml_string.unwrap().as_str());
             assert!(toml_object.is_ok(), toml_object.unwrap_err().to_string());
+            // unsupported Rust type??? WHICH ONE???????????????
         }
 
         #[test]
         fn json_serde() {
-            // FIXME: WatsonString (Vec<u8>) as keys causes issues with serializing to JSON
             let stack = create_stack();
 
             let json_string = serde_json::to_string(&stack);
