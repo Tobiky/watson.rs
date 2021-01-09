@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use watson_rs_core::types::Type;
+use watson_rs_core::types::{Type, WString};
 use watson_rs_lexer::lexer::Lexer;
 
 use watson_rs_compiler::{value_compiler::ValueCompiler, Compiler};
@@ -68,10 +68,17 @@ fn string_example() {
 
     let value = type_object.as_string();
 
+    #[cfg(feature = "ascii")]
     assert_eq!(
         b"tako",  value.as_slice(),
         "expected {:?} found {:?}", b"tako", value.as_slice()
-    )
+    );
+
+    #[cfg(not(feature = "ascii"))]
+    assert_eq!(
+        String::from("tako"),  value,
+        "expected {:?} found {:?}", String::from("tako"), value
+    );
 }
 
 // https://github.com/genkami/watson#hello-world
@@ -118,10 +125,18 @@ fn hello_world_example() {
     );
 
     let value = type_object.as_object();
+
+    #[cfg(feature = "ascii")]
     let expected = [(b"first".to_vec(), Type::Bool(true)), (b"hello".to_vec(), Type::String(b"world".to_vec()))]
         .iter()
         .map(|x| x.clone())
-        .collect::<HashMap<Vec<u8>, Type>>();
+        .collect::<HashMap<WString, Type>>();
+
+    #[cfg(not(feature = "ascii"))]
+    let expected = [(String::from("first"), Type::Bool(true)), (String::from("hello"), Type::String(String::from("world")))]
+        .iter()
+        .map(|x| x.clone())
+        .collect::<HashMap<WString, Type>>();
     
     assert!(
         value.iter().eq(expected.iter()), 
