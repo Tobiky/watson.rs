@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-#[cfg(feature = "ascii")]
+#[cfg(not(feature = "ascii"))]
 use ascii::AsciiChar;
 
 use watson_rs_core::{
@@ -69,28 +69,25 @@ pub fn create_bool(instructions: &mut Vec<Instruction>, boolean: &bool) {
     }
 }
 
-// ????
-// will be implemented soonish
-#[cfg(feature = "ascii")]
+#[cfg(not(feature = "ascii"))]
 fn ascii_of(character: char) -> u8 {
     AsciiChar::new(character).as_byte()
 }
 
-#[cfg(feature = "ascii")]
-pub fn create_ascii(instructions: &mut Vec<Instruction>, character: &char) {
-    let ascii = ascii_of(*character);
-    let int = ascii as i64;
+#[cfg(not(feature = "ascii"))]
+pub fn create_ascii(instructions: &mut Vec<Instruction>, character: char) {
+    let int = ascii_of(character) as i64;
     create_int(instructions, &int);
 }
 
-#[cfg(feature = "ascii")]
-pub fn create_ascii_string(instructions: &mut Vec<Instruction>, string: &str) {
+#[cfg(not(feature = "ascii"))]
+pub fn create_string(instructions: &mut Vec<Instruction>, string: &str) {
     string
         .chars()
-        .for_each(|character| create_ascii(instructions, &character));
+        .for_each(|character| create_ascii(instructions, character));
 }
-// ???? end
 
+#[cfg(feature = "ascii")]
 pub fn create_string(instructions: &mut Vec<Instruction>, string: &Vec<u8>) {
     instructions.push(Instruction::Snew);
 
