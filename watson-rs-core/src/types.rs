@@ -4,14 +4,25 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 // TODO: Remove or privatize short or long names
+#[cfg(feature = "ascii")]
 pub type WatsonCharacter = u8;
+#[cfg(not(feature = "ascii"))]
+pub type WatsonCharacter = char;
+
 pub type WChar = WatsonCharacter;
 
+
+#[cfg(feature = "ascii")]
 pub type WatsonString = Vec<WChar>;
+#[cfg(not(feature = "ascii"))]
+pub type WatsonString = String;
+
 pub type WString = WatsonString;
+
 
 pub type WatsonObject = HashMap<WString, Type>;
 pub type WObject = WatsonObject;
+
 
 pub type WatsonArray = Vec<Type>;
 pub type WArray = WatsonArray;
@@ -30,9 +41,19 @@ pub enum Type {
     Nil,
 }
 
+
+
 impl Type {
-    pub fn int_to_wchar(int: i64) -> WChar {
-        (int & !0xff) as WChar
+    pub const fn int_to_wchar(int: i64) -> WChar {
+        #[cfg(feature = "ascii")]
+        {
+            return (int & !0xff) as WChar;
+        }
+        #[cfg(not(feature = "ascii"))]
+        {
+            return int as u8 as char;
+        }
+
     }
 
     pub fn as_int(self) -> i64 {
@@ -109,14 +130,27 @@ mod unit_tests {
 
     #[test]
     fn to_string() {
-        let string = Type::String(b"hello".to_vec());
-        assert_eq!(b"hello".to_vec(), string.as_string());
+        #[cfg(feature = "ascii")] {
+            let string = Type::String(b"hello".to_vec());
+            assert_eq!(b"hello".to_vec(), string.as_string());
+        }
+         
+        #[cfg(not(feature = "ascii"))] {
+            let string = Type::String(String::from("hello"));
+            assert_eq!(String::from("hello"), string.as_string());
+        }
     }
 
     #[test]
     fn to_object() {
         let mut object = HashMap::new();
-        object.insert(vec![ b'a', b'c', b'd' ], Type::Nil);
+        
+        #[cfg(feature = "ascii")]
+        let key = vec![ b'a', b'c', b'd' ];
+        #[cfg(not(feature = "ascii"))]
+        let key = String::from("acd");
+
+        object.insert(key, Type::Nil);
 
         let object_type = Type::Object(object.clone());
 
@@ -156,8 +190,16 @@ mod unit_tests {
             stack.push(Type::Int(-420));
             
             let mut object = WObject::new();
-            object.insert(b"answer".to_vec(), Type::Uint(42));
-            object.insert(b"nil".to_vec(), Type::Nil);
+            #[cfg(feature = "ascii")] {
+                object.insert(b"answer".to_vec(), Type::Uint(42));
+                object.insert(b"nil".to_vec(), Type::Nil);
+            }
+
+            #[cfg(not(feature = "ascii"))] {
+                object.insert(String::from("answer"), Type::Uint(42));
+                object.insert(String::from("nil"), Type::Nil);
+            }
+
 
             stack.push(Type::Object(object));
 
@@ -169,7 +211,10 @@ mod unit_tests {
 
             stack.push(Type::Array(array));
 
+            #[cfg(feature = "ascii")]
             let string = b"hello world".to_vec();
+            #[cfg(not(feature = "ascii"))]
+            let string = String::from("hello world");
 
             stack.push(Type::String(string));
 
