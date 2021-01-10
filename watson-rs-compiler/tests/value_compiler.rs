@@ -101,6 +101,7 @@ fn string_example() {
 #[test]
 fn hello_world_example() {
     let mut lexer = Lexer::new();
+    // FIXME: The 'g' in the very end is causing the error
     let watson = "~?ShaaaaaarrShaaaaarrkShaaarrk-
                         SameeShaaaaaarrShaaaaarrkShaarrkShrrk-
                         ShaaaaaarrShaaaaakSameeShaaarrkShaarrk-
