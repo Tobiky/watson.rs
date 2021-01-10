@@ -1,16 +1,21 @@
 use watson_rs_core::types::Type;
 
-pub fn bnew(stack: &mut Vec<Type>) {
-    stack.push(Type::Bool(false))
+use super::POP_EMPTY_STACK_ERROR;
+
+pub fn bnew(stack: &mut Vec<Type>) -> Result<(), &str> {
+    Ok(stack.push(Type::Bool(false)))
 }
 
-pub fn bneg(stack: &mut Vec<Type>) {
-    let token_x = stack.pop().unwrap();
+pub fn bneg(stack: &mut Vec<Type>) -> Result<(), &str>{
+    let token = if let Some(value) = stack.pop() {
+        value 
+    } else {
+        return Err(POP_EMPTY_STACK_ERROR);
+    };
 
-    if let Type::Bool(x) = token_x {
-        stack.push(Type::Bool(!x));
-        return;
+    if let Type::Bool(x) = token {
+        return Ok(stack.push(Type::Bool(!x)));
     }
 
-    panic!("tried popping non-Bool object from stack");
+    Err("tried popping non-Bool object from stack")
 }

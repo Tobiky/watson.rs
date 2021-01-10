@@ -1,6 +1,7 @@
-use watson_rs_core::{instruction::Instruction, types::Type};
+use state::State;
+use watson_rs_core::{error::Error, instruction::Instruction, state, types::Type};
 
-use crate::{instruction_sets::get_instruction, Compiler};
+use crate::{Compiler, instruction_sets::get_instruction};
 
 pub struct ValueCompiler {
     instructions: Vec<Instruction>,
@@ -15,14 +16,19 @@ impl ValueCompiler {
 impl Compiler for ValueCompiler {
     type Out = Vec<Type>;
 
-    fn compile(self) -> Self::Out {
+    fn compile(self) -> Result<Self::Out, Error> {
         let instructions = self.instructions;
+        let mut stack = Self::Out::new();
+        let mut state = State::new(); 
 
-        instructions
-            .iter()
-            .fold(Self::Out::new(), |mut stack, &instruction| {
-                get_instruction(instruction)(&mut stack);
-                stack
-            })
+        for instruction in instructions
+        {
+            if let Err(error_message) = get_instruction(instruction)(&mut stack) {
+                return Err(Error::with_info(state, error_message.to_string()));
+            }
+            state.increment_column();
+        }
+
+        Ok(stack)
     }
 }

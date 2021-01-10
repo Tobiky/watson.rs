@@ -9,11 +9,13 @@ pub(crate) mod nil;
 pub(crate) mod object;
 pub(crate) mod string;
 
+const POP_EMPTY_STACK_ERROR: &str = "tried popping value from empty stack";
+
 use self::{array::*, bool::*, float::*, global::*, integer::*, nil::*, object::*, string::*};
 
 // TODO: Find some way to automate the match arms
 #[allow(unreachable_patterns)]
-pub fn get_instruction(instruction: Instruction) -> impl Fn(&mut Vec<Type>) -> () {
+pub fn get_instruction(instruction: Instruction) -> impl Fn(&mut Vec<Type>) -> Result<(), &str> {
     match instruction {
         Instruction::Inew => inew,
         Instruction::Iinc => iinc,
