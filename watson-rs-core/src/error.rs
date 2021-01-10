@@ -1,6 +1,7 @@
 use std::{fmt::Debug, string::String};
 
-use watson_rs_core::state::State;
+use crate::state::State;
+
 pub struct Error {
     state: State,
     message: String,

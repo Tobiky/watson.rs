@@ -1,6 +1,6 @@
-use watson_rs_core::{instruction::Instruction, state::State};
+use watson_rs_core::{error::Error, instruction::Instruction, state::State};
 
-use crate::{error::Error, evaluator::Evaluator, scanner::Scanner};
+use crate::{evaluator::Evaluator, scanner::Scanner};
 
 pub struct Lexer {
     instructions: Vec<Instruction>,
