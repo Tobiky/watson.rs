@@ -24,7 +24,8 @@ impl Compiler for ValueCompiler {
         for instruction in instructions
         {
             if let Err(error_message) = get_instruction(instruction)(&mut stack) {
-                return Err(Error::with_info(state, error_message.to_string()));
+                let message = format!("invalid instruction `{:?}` -> {}", instruction, error_message);
+                return Err(Error::with_info(state, message));
             }
             state.increment_column();
         }
