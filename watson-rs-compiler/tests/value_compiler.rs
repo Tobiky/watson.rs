@@ -12,25 +12,30 @@ fn integer_example() {
     let watson = "BBuaBubaBubbbaBubbbbaBubbbbbaBubbbbbba";
     let result = lexer.tokenize_str(watson);
 
-    assert!(
-        result.is_ok(),
-        result.err().unwrap().display_message()
-    );
+    assert!(result.is_ok(), result.err().unwrap().display_message());
 
     let instructions = result.ok().unwrap();
     let value_compiler = ValueCompiler::new(instructions);
     let result = value_compiler.compile();
+    let stack = if result.is_ok() { 
+        result.ok().unwrap() 
+    } else { 
+        panic!(result.err().unwrap().display_message());
+    };
 
     assert_eq!(
-        result.len(), 1,
-        "expected length 1, found length {}", result.len()
+        stack.len(),
+        1,
+        "expected length 1, found length {}",
+        stack.len()
     );
 
-    let type_object = result[0].clone();
+    let type_object = stack[0].clone();
 
     assert!(
         matches!(type_object, Type::Int(_)),
-        "expected int type found {:?}", type_object
+        "expected int type found {:?}",
+        type_object
     );
 
     let value = type_object.as_int();
@@ -45,39 +50,50 @@ fn string_example() {
     let watson = "?SShaakShaaaakShaaaaakShaaaaaak-SShkShaaaaakShaaaaaak-SShkShakShaaakShaaaaakShaaaaaak-SShkShakShaakShaaakShaaaaakShaaaaaak-";
     let result = lexer.tokenize_str(watson);
 
-    assert!(
-        result.is_ok(),
-        result.err().unwrap().display_message()
-    );
+    assert!(result.is_ok(), result.err().unwrap().display_message());
 
     let instructions = result.ok().unwrap();
     let value_compiler = ValueCompiler::new(instructions);
     let result = value_compiler.compile();
+    let stack = if result.is_ok() {
+        result.ok().unwrap()
+    } else {
+        panic!(result.err().unwrap().display_message());
+    };
 
     assert_eq!(
-        result.len(), 1,
-        "expected length 1, found length {}", result.len()
+        stack.len(),
+        1,
+        "expected length 1, found length {}",
+        stack.len()
     );
 
-    let type_object = result[0].clone();
+    let type_object = stack[0].clone();
 
     assert!(
         matches!(type_object, Type::String(_)),
-        "expected string type found {:?}", type_object
+        "expected string type found {:?}",
+        type_object
     );
 
     let value = type_object.as_string();
 
     #[cfg(feature = "ascii")]
     assert_eq!(
-        b"tako",  value.as_slice(),
-        "expected {:?} found {:?}", b"tako", value.as_slice()
+        b"tako",
+        value.as_slice(),
+        "expected {:?} found {:?}",
+        b"tako",
+        value.as_slice()
     );
 
     #[cfg(not(feature = "ascii"))]
     assert_eq!(
-        String::from("tako"),  value,
-        "expected {:?} found {:?}", String::from("tako"), value
+        String::from("tako"),
+        value,
+        "expected {:?} found {:?}",
+        String::from("tako"),
+        value
     );
 }
 
@@ -103,43 +119,56 @@ fn hello_world_example() {
                         ^!!!!!!!!!!!!!g";
     let result = lexer.tokenize_str(watson);
 
-    assert!(
-        result.is_ok(),
-        result.err().unwrap().display_message()
-    );
+    assert!(result.is_ok(), result.err().unwrap().display_message());
 
     let instructions = result.ok().unwrap();
     let value_compiler = ValueCompiler::new(instructions);
     let result = value_compiler.compile();
+    let stack = if result.is_ok() {
+        result.ok().unwrap()
+    } else {
+        panic!(result.err().unwrap().display_message());
+    };
 
     assert_eq!(
-        result.len(), 1,
-        "expected length 1, found length {}", result.len()
+        stack.len(),
+        1,
+        "expected length 1, found length {}",
+        stack.len()
     );
 
-    let type_object = result[0].clone();
+    let type_object = stack[0].clone();
 
     assert!(
         matches!(type_object, Type::Object(_)),
-        "expected object type found {:?}", type_object
+        "expected object type found {:?}",
+        type_object
     );
 
     let value = type_object.as_object();
 
     #[cfg(feature = "ascii")]
-    let expected = [(b"first".to_vec(), Type::Bool(true)), (b"hello".to_vec(), Type::String(b"world".to_vec()))]
-        .iter()
-        .map(|x| x.clone())
-        .collect::<HashMap<WString, Type>>();
+    let expected = [
+        (b"first".to_vec(), Type::Bool(true)),
+        (b"hello".to_vec(), Type::String(b"world".to_vec())),
+    ]
+    .iter()
+    .map(|x| x.clone())
+    .collect::<HashMap<WString, Type>>();
 
     #[cfg(not(feature = "ascii"))]
-    let expected = [(String::from("first"), Type::Bool(true)), (String::from("hello"), Type::String(String::from("world")))]
-        .iter()
-        .map(|x| x.clone())
-        .collect::<HashMap<WString, Type>>();
-    
+    let expected = [
+        (String::from("first"), Type::Bool(true)),
+        (String::from("hello"), Type::String(String::from("world"))),
+    ]
+    .iter()
+    .map(|x| x.clone())
+    .collect::<HashMap<WString, Type>>();
+
     assert!(
-        value.iter().eq(expected.iter()), 
-        "expected {:?} found {:?}", expected, value
+        value.iter().eq(expected.iter()),
+        "expected {:?} found {:?}",
+        expected,
+        value
     )
 }
