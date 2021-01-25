@@ -5,4 +5,5 @@
 ![lib ci status](https://github.com/Tobiky/watson.rs/workflows/watson.rs/badge.svg)
 
 
+Put on hold temporarily
 Rust implementation of https://github.com/genkami/watson
