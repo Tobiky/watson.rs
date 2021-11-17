@@ -1,92 +1,30 @@
-use watson_rs_core::{error::Error, instruction::Instruction, state::State};
+use std::collections::HashSet;
 
-use crate::{evaluator::Evaluator, scanner::Scanner};
+use watson_rs_core::{instruction::Instruction, lexeme::{lexeme_sequences, LexemeType}, mode::Mode};
 
 pub struct Lexer {
-    instructions: Vec<Instruction>,
-    state: State,
-    evaluator: Evaluator,
-    scanner: Scanner,
+    state: Mode,
+    lexemes: HashSet<LexemeType>,
 }
 
 impl Lexer {
-    pub fn new() -> Self {
-        let state = State::new();
-        let evaluator = Evaluator::new(state.mode());
-        let scanner = Scanner::new(state.mode());
+    pub fn new(mode: Mode) -> Self {
+        let lexemes = lexeme_sequences(mode).iter().cloned().collect();
 
-        Lexer {
-            instructions: Vec::new(),
-            state,
-            evaluator,
-            scanner,
-        }
+        Lexer { lexemes }
     }
 
-    pub fn pop(&mut self) -> Option<Instruction> {
-        self.instructions.pop()
+    pub fn is_lexeme(&self, lexeme: LexemeType) -> bool {
+        self.lexemes.contains(&lexeme)
     }
 
-    pub fn push(&mut self, instruction: Instruction) {
-        self.instructions.push(instruction)
-    }
-
-    pub fn instructions(&self) -> Vec<Instruction> {
-        self.instructions.clone()
-    }
-
-    pub fn next_mode(&mut self) {
-        self.state.next_mode();
-        self.evaluator = Evaluator::new(self.state.mode());
-        self.scanner = Scanner::new(self.state.mode());
-    }
-
-    fn generate_error_with_message(&self, message: String) -> Result<Vec<Instruction>, Error> {
-        Err(Error::with_info(self.state, message))
-    }
-
-    // TODO: ASCII version
-    // TODO: Not-mutable version
-    pub fn tokenize_str(&mut self, input: &str) -> Result<Vec<Instruction>, Error> {
-        for lexeme in input.chars() {
-            if lexeme.is_whitespace() || lexeme.is_ascii_whitespace() {
-                continue;
+    pub fn feed(&self, character: char) -> Result<Instruction, Error> {
+        for (bind_character, bind_instruction) in bindings(self.mode) {
+            if bind_character == character {
+                return bind_instruction;
             }
-            
-            if self.scanner.is_lexeme(lexeme) {
-                let token = self.evaluator.evaluate(lexeme);
-                self.push(token);
-
-                if token == Instruction::Snew {
-                    self.next_mode();
-                }
-            } else {
-                return self.generate_error_with_message(format!(
-                    "`{}`sequence is not valid for lexeme mode", lexeme
-                ));
-            }
-
-            self.state.increment_column();
         }
-
-        Ok(self.instructions.clone())
-    }
-
-    // TODO: Make this function return a generator
-    // TODO: Abstract input to stream of LexemeType
-    pub fn tokenize<T: std::io::BufRead>(&mut self, input: T) -> Result<Vec<Instruction>, Error> {
-        for line_result in input.lines() {
-            if let Ok(line) = line_result {
-                let _ = self.tokenize_str(line.as_str())?;
-            } else {
-                return self.generate_error_with_message(line_result.unwrap_err().to_string());
-            }
-
-            self.state.increment_line();
-            self.state.reset_column();
-        }
-
-        let instructions = self.instructions();
-        Ok(instructions)
+        // TODO: Improve error message
+        return Error::new("No lexeme using that character in the current mode.");
     }
 }
