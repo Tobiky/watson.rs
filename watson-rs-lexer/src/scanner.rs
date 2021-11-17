@@ -38,14 +38,14 @@ impl Scanner {
         self.lexer = Lexer::new(self.state.mode());
     }
 
-    fn generate_error_with_message(&self, message: String) -> Result<Vec<Instruction>, Error> {
-        Err(Error::with_info(self.state, message))
+    fn generate_error_with_message(&self, message: String) -> Error {
+        Error::with_info(self.state, message)
     }
 
     fn feed(&mut self, symbol: char) -> Result<(), Error>
     {
         if symbol.is_whitespace() || symbol.is_ascii_whitespace() {
-            return ();
+            return Ok(())
         }
 
         if self.lexer.is_lexeme(symbol) {
@@ -56,10 +56,11 @@ impl Scanner {
             if token == Instruction::Snew {
                 self.next_mode();
             }
+            Ok(())
         } else {
-            return self.generate_error_with_message(format!(
-                "`{}`sequence is not valid for lexeme mode", character
-            ));
+            Err(self.generate_error_with_message(format!(
+                "`{}`sequence is not valid for lexeme mode", &symbol
+            )))
         }
     }
 
