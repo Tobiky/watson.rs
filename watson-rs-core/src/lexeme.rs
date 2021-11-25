@@ -6,7 +6,7 @@ pub type LexemeType = char;
 pub const MODE_A_REGEX: &str = "";
 
 // TODO: Complete
-pub const MODE_B_REGEX: &str = "";
+pub const MODE_S_REGEX: &str = "";
 
 // TODO: Move to configuration file
 pub static MODE_A_LEXEMES_SEQUENCES: [LexemeType; 23] = [

@@ -1,3 +1,7 @@
+use std::{convert::TryFrom, error::Error};
+
+use crate::lexeme::{self, LexemeType};
+
 #[derive(Debug, Clone, Hash, Copy, PartialEq, Eq)]
 pub enum Instruction {
     Inew,
@@ -52,6 +56,16 @@ impl Instruction {
             Instruction::Gpop,
             Instruction::Gswp,
         ]
+    }
+}
+
+impl TryFrom<LexemeType> for Instruction {
+    type Error = Error;
+    
+    fn try_from(value: LexemeType) {
+        if (!lexeme::MODE_A_LEXEMES_SEQUENCES.contains(&value) && !lexeme::MODE_S_LEXEMES_SEQUENCES.contains(&value)) {
+            // TODO: return Error
+        }
     }
 }
 
