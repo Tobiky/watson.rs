@@ -12,6 +12,9 @@ members = [
     "watson-rs-compiler"
 ]
 
+[workspace.dependencies]
+thiserror = "2.0.12"
+
 [dependencies]
 # https://doc.rust-lang.org/cargo/reference/features.html
 # https://doc.rust-lang.org/book/ch14-03-cargo-workspaces.html
