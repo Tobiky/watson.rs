@@ -1,15 +1,38 @@
+use std::convert::TryFrom;
+use thiserror::Error;
+
 #[derive(Debug, Clone, Copy, Hash, PartialEq, Eq)]
 pub enum Mode {
     A = 0x1,
     S = 0x2,
 }
 
-impl From<i32> for Mode {
-    fn from(integer: i32) -> Self {
+impl<E> From<Mode> for Result<Mode, E> {
+    fn from(value: Mode) -> Self {
+        Ok(value)
+    }
+}
+
+#[derive(Error, Debug, Clone, Copy)]
+pub enum ModeErrorKind {
+    #[error("provided mode ({0:x}) is out of range for acceptable modes (0x1, 0x2)")]
+    IntegerOutOfRange(i32),
+}
+
+impl<T> From<ModeErrorKind> for Result<T, ModeErrorKind> {
+    fn from(value: ModeErrorKind) -> Self {
+        Err(value)
+    }
+}
+
+impl TryFrom<i32> for Mode {
+    type Error = ModeErrorKind;
+
+    fn try_from(integer: i32) -> Result<Self, Self::Error> {
         match integer {
-            0x1 => Mode::A,
-            0x2 => Mode::S,
-            _ => panic!("tried to convert non-supported integer to Mode"),
+            0x1 => Mode::A.into(),
+            0x2 => Mode::S.into(),
+            x => ModeErrorKind::IntegerOutOfRange(x).into(),
         }
     }
 }
