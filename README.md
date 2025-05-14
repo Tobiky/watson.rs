@@ -5,5 +5,6 @@
 ![lib ci status](https://github.com/Tobiky/watson.rs/workflows/watson.rs/badge.svg)
 
 
-Put on hold temporarily
 Rust implementation of https://github.com/genkami/watson
+
+Project was close to completion but forgot to push before reinstalling OS so all progress was wiped. So was my motivation.
